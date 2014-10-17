@@ -1,2 +1,2 @@
-RewriteEngine on              
+RewriteEngine on
 ErrorDocument 404 /404.html
