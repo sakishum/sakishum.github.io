@@ -4,7 +4,7 @@
   <title><![CDATA[MckeeのClub & SAKI'sブログ]]></title>
   <link href="http://sakishum.github.io/atom.xml" rel="self"/>
   <link href="http://sakishum.github.io/"/>
-  <updated>2014-10-17T17:13:54+08:00</updated>
+  <updated>2014-10-17T17:23:34+08:00</updated>
   <id>http://sakishum.github.io/</id>
   <author>
     <name><![CDATA[Saki Shum]]></name>
@@ -15,7 +15,7 @@
   
   <entry>
     <title type="html"><![CDATA[Title Post]]></title>
-    <link href="http://sakishum.github.io/blog/title-post.html/"/>
+    <link href="http://sakishum.github.io/blog/title-post"/>
     <updated>2014-10-17T16:32:35+08:00</updated>
     <id>http://sakishum.github.io/blog/title-post</id>
     <content type="html"><![CDATA[
@@ -24,7 +24,7 @@
   
   <entry>
     <title type="html"><![CDATA[My Second Blog]]></title>
-    <link href="http://sakishum.github.io/blog/my-second-blog.html/"/>
+    <link href="http://sakishum.github.io/blog/my-second-blog"/>
     <updated>2014-10-17T16:18:50+08:00</updated>
     <id>http://sakishum.github.io/blog/my-second-blog</id>
     <content type="html"><![CDATA[

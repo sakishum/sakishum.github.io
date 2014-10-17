@@ -3,7 +3,7 @@
   
   
   <url>
-    <loc>http://sakishum.github.io/blog/title-post.html/</loc>
+    <loc>http://sakishum.github.io/blog/title-post</loc>
     
     <lastmod>2014-10-17T16:32:35+08:00</lastmod>
     
@@ -11,7 +11,7 @@
   </url>
   
   <url>
-    <loc>http://sakishum.github.io/blog/my-second-blog.html/</loc>
+    <loc>http://sakishum.github.io/blog/my-second-blog</loc>
     
     <lastmod>2014-10-17T16:18:50+08:00</lastmod>
     
@@ -21,21 +21,21 @@
   
   <url>
     <loc>http://sakishum.github.io/404.html</loc>
-    <lastmod>2014-10-17T17:13:54+08:00</lastmod>
+    <lastmod>2014-10-17T17:23:34+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   
   <url>
     <loc>http://sakishum.github.io/blog/archives/</loc>
-    <lastmod>2014-10-17T17:13:54+08:00</lastmod>
+    <lastmod>2014-10-17T17:23:34+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   
   <url>
     <loc>http://sakishum.github.io/</loc>
-    <lastmod>2014-10-17T17:13:54+08:00</lastmod>
+    <lastmod>2014-10-17T17:23:34+08:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
