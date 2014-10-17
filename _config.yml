@@ -36,12 +36,13 @@ plugins: plugins
 code_dir: downloads/code
 category_dir: blog/categories
 category_title_prefix: "分类：" # 修改分类前缀
-markdown: rdiscount
-rdiscount:
-  extensions:
-    - autolink
-    - footnotes
-    - smart
+markdown: kramdown    # 修改默认 Markdown 解释器
+#markdown: rdiscount
+#rdiscount:
+  #extensions:
+    #- autolink
+    #- footnotes
+    #- smart
 highlighter: pygments # default python pygments have been replaced by pygments.rb
 
 paginate: 10          # Posts per page on the blog index
