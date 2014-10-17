@@ -9,8 +9,9 @@
   <meta name="author" content="Saki Shum">
 
   
-  <meta name="description" content="
-">
+  <meta name="description" content="{ % coderay [lang:lang] [linenos:true|false(default)] [title] [url] [link text] % }
+rv = conn.validateaddress(foo)
+if rv.isvalid: print “The address &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -113,7 +114,13 @@
   </header>
 
 
-<div class="entry-content">
+<div class="entry-content"><p>{ % coderay [lang:lang] [linenos:true|false(default)] [title] [url] [link text] % }
+rv = conn.validateaddress(foo)
+if rv.isvalid:
+    print “The address that you provided is valid”
+else:
+    print “The address that you provided is invalid, please correct”
+{ % endcoderay % }</p>
 </div>
 
 

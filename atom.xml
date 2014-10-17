@@ -4,7 +4,7 @@
   <title><![CDATA[MckeeのClub & SAKI'sブログ]]></title>
   <link href="http://sakishum.github.io/atom.xml" rel="self"/>
   <link href="http://sakishum.github.io/"/>
-  <updated>2014-10-17T18:07:00+08:00</updated>
+  <updated>2014-10-17T21:29:53+08:00</updated>
   <id>http://sakishum.github.io/</id>
   <author>
     <name><![CDATA[Saki Shum]]></name>
@@ -27,7 +27,13 @@
     <link href="http://sakishum.github.io/blog/my-second-blog"/>
     <updated>2014-10-17T16:18:50+08:00</updated>
     <id>http://sakishum.github.io/blog/my-second-blog</id>
-    <content type="html"><![CDATA[
+    <content type="html"><![CDATA[<p>{ % coderay [lang:lang] [linenos:true|false(default)] [title] [url] [link text] % }
+rv = conn.validateaddress(foo)
+if rv.isvalid:
+    print “The address that you provided is valid”
+else:
+    print “The address that you provided is invalid, please correct”
+{ % endcoderay % }</p>
 ]]></content>
   </entry>
   
