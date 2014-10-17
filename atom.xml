@@ -4,7 +4,7 @@
   <title><![CDATA[MckeeのClub & SAKI'sブログ]]></title>
   <link href="http://sakishum.github.io/atom.xml" rel="self"/>
   <link href="http://sakishum.github.io/"/>
-  <updated>2014-10-17T11:06:56+08:00</updated>
+  <updated>2014-10-17T11:33:10+08:00</updated>
   <id>http://sakishum.github.io/</id>
   <author>
     <name><![CDATA[Saki Shum]]></name>
@@ -12,14 +12,5 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
-  
-  <entry>
-    <title type="html"><![CDATA[Post Title]]></title>
-    <link href="http://sakishum.github.io/blog/post-title.html/"/>
-    <updated>2014-10-16T20:07:12+08:00</updated>
-    <id>http://sakishum.github.io/blog/post-title</id>
-    <content type="html"><![CDATA[
-]]></content>
-  </entry>
   
 </feed>
