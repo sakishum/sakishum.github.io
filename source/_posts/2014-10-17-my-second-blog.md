@@ -24,6 +24,8 @@ def hello():
 {% imgcap /images/dream.jpg Leonhard Euler %} 
 <!--more-->
 
+{% imgcap /images/Leonhard_Euler.jpg Place Kitten #4 %}
+
 {::nomarkdown}
 <i class="fa fa-camera-retro fa-5x"></i>
 {:/nomarkdown}
