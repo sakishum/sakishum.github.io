@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[分类：octopress | MckeeのClub & SAKI'sブログ]]></title>
+  <link href="http://sakishum.github.io/blog/categories/octopress/atom.xml" rel="self"/>
+  <link href="http://sakishum.github.io/"/>
+  <updated>2014-10-18T20:30:19+08:00</updated>
+  <id>http://sakishum.github.io/</id>
+  <author>
+    <name><![CDATA[Saki Shum]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[My Second Blog]]></title>
+    <link href="http://sakishum.github.io/blog/my-second-blog"/>
+    <updated>2014-10-17T16:18:50+08:00</updated>
+    <id>http://sakishum.github.io/blog/my-second-blog</id>
+    <content type="html"><![CDATA[<pre lang="python"><code>def hello
+  puts "hello world"
+end
+</code></pre>
+
+<p><figure class='code'><figcaption><span>title:python </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='python'><span class='line'><span class="k">def</span> <span class="nf">hello</span><span class="p">():</span>
+</span><span class='line'>    <span class="k">print</span> <span class="err">“</span><span class="n">hello</span> <span class="n">world</span><span class="err">”</span>
+</span><span class='line'>    <span class="k">pass</span>
+</span></code></pre></td></tr></table></div></figure></p>
+
+<p><span class='caption-wrapper'><img class='caption' src='/images/dream.jpg' width='' height='' title='Leonhard Euler'><span class='caption-text'>Leonhard Euler</span></span> 
+<!--more--></p>
+
+<i class="fa fa-camera-retro fa-5x"></i>
+
+<p>Test Code in blog  </p>
+
+<p><figure class='code'><figcaption><span>title:main.cpp </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='c++'><span class='line'><span class="kt">int</span> <span class="n">main</span><span class="p">()</span><span class="o">&lt;</span><span class="n">br</span> <span class="o">/&gt;</span>
+</span><span class='line'><span class="p">{</span><span class="o">&lt;</span><span class="n">br</span> <span class="o">/&gt;</span>
+</span><span class='line'> <span class="n">cout</span><span class="err">«“</span><span class="n">hello</span> <span class="n">world</span><span class="err">”«</span><span class="n">endl</span><span class="p">;</span><span class="o">&lt;</span><span class="n">br</span> <span class="o">/&gt;</span>
+</span><span class='line'><span class="p">};</span><span class="o">&lt;</span><span class="n">br</span> <span class="o">/&gt;</span>
+</span></code></pre></td></tr></table></div></figure></p>
+
+]]></content>
+  </entry>
+  
+</feed>
