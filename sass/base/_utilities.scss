@@ -26,3 +26,6 @@
   @return $text-color;
 }
 
+@mixin reset-shadow-box() {
+  @include shadow-box(0px, 0px, 0px);
+}

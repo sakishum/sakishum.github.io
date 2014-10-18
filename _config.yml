@@ -37,6 +37,11 @@ code_dir: downloads/code
 category_dir: blog/categories
 category_title_prefix: "分类：" # 修改分类前缀
 markdown: kramdown    # 修改默认 Markdown 解释器
+kramdown:
+  use_coderay: true
+  coderay:
+    coderay_line_numbers: nil
+    coderay_css: class
 #markdown: rdiscount
 #rdiscount:
   #extensions:
