@@ -4,7 +4,7 @@
   <title><![CDATA[MckeeのClub & SAKI'sブログ]]></title>
   <link href="http://sakishum.github.io/atom.xml" rel="self"/>
   <link href="http://sakishum.github.io/"/>
-  <updated>2014-10-19T20:16:49+08:00</updated>
+  <updated>2014-10-21T22:30:25+08:00</updated>
   <id>http://sakishum.github.io/</id>
   <author>
     <name><![CDATA[Saki Shum]]></name>
@@ -14,11 +14,13 @@
 
   
   <entry>
-    <title type="html"><![CDATA[Title Post]]></title>
-    <link href="http://sakishum.github.io/blog/title-post"/>
-    <updated>2014-10-17T16:32:35+08:00</updated>
-    <id>http://sakishum.github.io/blog/title-post</id>
-    <content type="html"><![CDATA[
+    <title type="html"><![CDATA[Google 编码规范]]></title>
+    <link href="http://sakishum.github.io/blog/google-style-guide"/>
+    <updated>2014-10-21T22:19:56+08:00</updated>
+    <id>http://sakishum.github.io/blog/google-style-guide</id>
+    <content type="html"><![CDATA[<p><a href="http://zh-google-styleguide.readthedocs.org/en/latest/google-cpp-styleguide/">Google编码规范</a>，包含C++，Java，Python，JSON，Objective-C，Shell。在制定自己的编码规范时可以参考一下。</p>
+
+<!--more-->
 ]]></content>
   </entry>
   
