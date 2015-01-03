@@ -4,7 +4,7 @@
   <title><![CDATA[MckeeのClub & SAKI'sブログ]]></title>
   <link href="http://sakishum.github.io/atom.xml" rel="self"/>
   <link href="http://sakishum.github.io/"/>
-  <updated>2015-01-03T16:08:03+08:00</updated>
+  <updated>2015-01-03T18:36:52+08:00</updated>
   <id>http://sakishum.github.io/</id>
   <author>
     <name><![CDATA[Saki Shum]]></name>
@@ -14,7 +14,7 @@
 
   
   <entry>
-    <title type="html"><![CDATA[使用 Clang 解析 C++ 实现自动脚本绑定]]></title>
+    <title type="html"><![CDATA[使用 Clang 解析 C++ 头文件实现自动脚本绑定]]></title>
     <link href="http://sakishum.github.io/blog/clang-ast-python"/>
     <updated>2015-01-03T15:30:06+08:00</updated>
     <id>http://sakishum.github.io/blog/clang-ast-python</id>
@@ -25,7 +25,7 @@
 
 <p>工具的主要功能。它的输入是 C++ 头文件，里面包含了需要导出的 C++ 类定义。根据输入，会自动处理处理类/结构体的实现和一堆由模板文件生成的业务逻辑代码。</p>
 
-<p>倜¨工具内部，首先会对输入的 C++ 文件进行语法分析，生成抽象语法树(AST)。接着通过遍历语法树来生成所需要的包装导出代码。这里是使用访问者 (Visitor) 设计模式来解耦，把语法树的遍历逻辑和不同文件的代码生成逻辑区分开来，彼此独立实现。</p>
+<p>在工具内部，首先会对输入的 C++ 文件进行语法分析，生成抽象语法树(AST)。接着通过遍历语法树来生成所需要的包装导出代码。这里是使用访问者 (Visitor) 设计模式来解耦，把语法树的遍历逻辑和不同文件的代码生成逻辑区分开来，彼此独立实现。</p>
 
 <p>这个工具究竟是怎么解析 C++ 文件的。众所周知，C++ 语法以繁复难以解析著称。此时有 3 个选择:</p>
 
@@ -36,11 +36,14 @@
 比较权衡之后最终选择了第三种方式，使用一个真正的 C++ 编译器来帮助解析。但这里没有使用老牌的 g++，而是选择了另一位新晋明星: Clang。</li>
 </ol>
 
-<pre><code>Clang 是苹果基于 LLVM 架构开发的 C++/Objective C 编译器，在被苹果 Xcode 加持后，又被 FreeBSD 选为默认编译器。势头正旺，大有取代 g++ 的架式。它不但对 C++ 新标准有完美的支持，更重要的是它把自己内部的语法解析功能通过 libclang 暴露出来，让用户能够直接使用。象 Xcode 集成开发环境的智能提示，还有一些第三方的 C++ 重构工具就是利用 Clang 本身提供的解析功能实现的。cppython 也正是利用 Clang 官方的 Python 扩展来实现 C++ 解析功能的。
-</code></pre>
-<p>一行程序胜过千言万语。下面的代码示范了如何利用 Clang 来解析我们上文中的 CppFoo 类定义</p>
+<blockquote>
+  <p>Clang 是苹果基于 LLVM 架构开发的 C++/Objective C 编译器，在被苹果 Xcode 加持后，又被 FreeBSD 选为默认编译器。势头正旺，大有取代 g++ 的架式。它不但对 C++ 新标准有完美的支持，更重要的是它把自己内部的语法解析功能通过 libclang 暴露出来，让用户能够直接使用。象 Xcode 集成开发环境的智能提示，还有一些第三方的 C++ 重构工具就是利用 Clang 本身提供的解析功能实现的。</p>
+</blockquote>
 
-<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span>title:python </span></figcaption>
+<p>本工具也正是利用 Clang 官方的 Python 扩展来实现 C++ 解析功能的。
+一行程序胜过千言万语。下面的代码示范了如何利用 Clang 来解析输入的 C++ 头文件。</p>
+
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span>title:clang_3_local.py </span></figcaption>
 <div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
 <span class="line-number">2</span>
 <span class="line-number">3</span>
@@ -121,51 +124,74 @@
 </span><span class="line">    <span class="n">main</span><span class="p">()</span>
 </span></code></pre></td></tr></table></div></figure></notextile></div>
 
-<p>有了 Clang 的强力支持后，cppython 不费吹灰之力就能解析任意 C++ 代码了。在用脚本操作类的场景中，上述代码失分典型。接下来就要考虑该如何自动生成类似的代码。</p>
+<p>有了 Clang 的强力支持后，工具就可以不费吹灰之力就能解析任意 C++ 代码了。在用脚本操作类/结构体的场景中，上述代码十分典型。接下来就要考虑该如何使用解析出来的信息来自动生成所需要的代码。</p>
 
-<p>遍历 AST
-通过查看头文件中的抽象语法树（AST），利用所获得的信息来生成上述的绑定代码。
-通过游标（cursor）来遍历 AST。游标指向 AST 中的某个节点，用来说明他是哪一类节点（比如说是类定义）其子节点是什么（比如说类的成员方法）等各类信息。第一个游标所指向的是 translation unit 的根，即所要解析的文件。</p>
+<p>查看头文件中的抽象语法树（AST），利用所获得的信息来生成绑定代码。脚本中是通过游标（cursor）来遍历 AST。游标指向 AST 中的某个节点，用来说明他是哪一类节点（比如说是类/结构体定义）其子节点是什么（比如说类/结构体的成员方法）等各类信息。第一个游标所指向的是 translation unit 的根(root)，即所要解析的文件。</p>
 
 <p>以下的代码可以获得该游标：</p>
 
-<p>index = clang.cindex.Index.create()
-tu = index.parse(sys.argv[1], [‘-x’, ‘c++’, ‘-std=c++11’, ‘-D__CODE_GENERATOR__’])</p>
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span>title:cursor </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+</pre></td><td class="code"><pre><code class="python"><span class="line"><span class="n">index</span> <span class="o">=</span> <span class="n">clang</span><span class="o">.</span><span class="n">cindex</span><span class="o">.</span><span class="n">Index</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>
+</span><span class="line"><span class="n">tu</span> <span class="o">=</span> <span class="n">index</span><span class="o">.</span><span class="n">parse</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="s">&#39;-x&#39;</span><span class="p">,</span> <span class="s">&#39;c++&#39;</span><span class="p">,</span> <span class="s">&#39;-std=c++11&#39;</span><span class="p">,</span> <span class="s">&#39;-D__CODE_GENERATOR__&#39;</span><span class="p">])</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
 
 <p>index 对象是 libclang 的主要接口，由此就可以开始和类库进行通信了。</p>
 
-<p>parse 函数的参数
-parse 函数的参数有文件名和包括各种编译标志的列表。这里需要制定要编译的是一个 C++ 头文件（-X C++），否则会根据 .h 的扩展名 libclang 会推断它是 C 的头文件（结果会产生大相径庭的 AST）。此选项会让 libclang 对指定的文件进行预处理（包括解析宏和 include），并将它作为 C++ 源码来处理。其他选项应该是不言自明的：设置源文件所遵循的 C++ 标准；并定义 __CODE_GENERATOR__宏，后续大部分实现代码都会用到的宏。最后传入的结构体/类就可以转储成对应的 AST。</p>
+<p>parse 函数的参数有文件名和包括各种编译标志的列表。这里需要制定要编译的是一个 C++ 头文件（-X C++），否则会根据 .h 的扩展名 libclang 会推断它是 C 的头文件（结果会产生大相径庭的 AST）。此选项会让 libclang 对指定的文件进行预处理（包括解析宏和 include），并将它作为 C++ 源码来处理。其他选项应该是不言自明的：设置源文件所遵循的 C++ 标准；并定义 __CODE_GENERATOR__宏，后续大部分实现代码都会用到的宏。最后传入的结构体/类就可以转储成对应的 AST。</p>
 
-<p>下面是解析后的输出结果，大家可以直观感受一下 clang Python 扩展的威力
-   STRUCT_DECL SD_SignGlobal
-     ANNOTATE_ATTR target
-     FIELD_DECL viplevel
-       ANNOTATE_ATTR get
-       ANNOTATE_ATTR add
-       TYPE_REF uint32_t
-     FIELD_DECL propid
-       TYPE_REF uint32_t
-     FIELD_DECL num
-       TYPE_REF uint32_t
-     FIELD_DECL id
-       ANNOTATE_ATTR hidden
-       ANNOTATE_ATTR key
-       TYPE_REF uint32_t
-     FIELD_DECL month
-       ANNOTATE_ATTR hidden
-       ANNOTATE_ATTR key
-       TYPE_REF uint32_t</p>
+<p>下面是解析后的输出结果，大家可以直观感受一下 clang Python 扩展的威力:</p>
 
-<p>比较源代码及其转储的语法树可以更好地理解 libclang 解析源代码时都做了哪些工作。</p>
+<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span>title:output </span></figcaption>
+<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
+<span class="line-number">2</span>
+<span class="line-number">3</span>
+<span class="line-number">4</span>
+<span class="line-number">5</span>
+<span class="line-number">6</span>
+<span class="line-number">7</span>
+<span class="line-number">8</span>
+<span class="line-number">9</span>
+<span class="line-number">10</span>
+<span class="line-number">11</span>
+<span class="line-number">12</span>
+<span class="line-number">13</span>
+<span class="line-number">14</span>
+<span class="line-number">15</span>
+<span class="line-number">16</span>
+<span class="line-number">17</span>
+<span class="line-number">18</span>
+<span class="line-number">19</span>
+<span class="line-number">20</span>
+</pre></td><td class="code"><pre><code class="python"><span class="line">   <span class="o">...</span>
+</span><span class="line">   <span class="n">STRUCT_DECL</span> <span class="n">SD_SignGlobal</span>
+</span><span class="line">     <span class="n">ANNOTATE_ATTR</span> <span class="n">target</span>
+</span><span class="line">     <span class="n">FIELD_DECL</span> <span class="n">viplevel</span>
+</span><span class="line">       <span class="n">ANNOTATE_ATTR</span> <span class="n">get</span>
+</span><span class="line">       <span class="n">ANNOTATE_ATTR</span> <span class="n">add</span>
+</span><span class="line">       <span class="n">TYPE_REF</span> <span class="n">uint32_t</span>
+</span><span class="line">     <span class="n">FIELD_DECL</span> <span class="n">propid</span>
+</span><span class="line">       <span class="n">TYPE_REF</span> <span class="n">uint32_t</span>
+</span><span class="line">     <span class="n">FIELD_DECL</span> <span class="n">num</span>
+</span><span class="line">       <span class="n">TYPE_REF</span> <span class="n">uint32_t</span>
+</span><span class="line">     <span class="n">FIELD_DECL</span> <span class="nb">id</span>
+</span><span class="line">       <span class="n">ANNOTATE_ATTR</span> <span class="n">hidden</span>
+</span><span class="line">       <span class="n">ANNOTATE_ATTR</span> <span class="n">key</span>
+</span><span class="line">       <span class="n">TYPE_REF</span> <span class="n">uint32_t</span>
+</span><span class="line">     <span class="n">FIELD_DECL</span> <span class="n">month</span>
+</span><span class="line">       <span class="n">ANNOTATE_ATTR</span> <span class="n">hidden</span>
+</span><span class="line">       <span class="n">ANNOTATE_ATTR</span> <span class="n">key</span>
+</span><span class="line">       <span class="n">TYPE_REF</span> <span class="n">uint32_t</span>
+</span><span class="line">     <span class="o">...</span>
+</span></code></pre></td></tr></table></div></figure></notextile></div>
 
-<p>递归
-libclang C API 提供了基于访客（vistor-based）的方式来遍历 AST ，可以通过其 Python 绑定中的函数 clang.cindex.Cursor_vist 来遍历，不过更 Python 的方式是采用基于迭代器的方法，这是 Pythong绑定所特有的。处理树结构最直接的方式是递归遍历。这是相当简单的（见 dumpnode 函数）。</p>
+<p>libclang C API 提供了基于访客（vistor-based）的方式来遍历 AST ，可以通过其 Python 绑定中的函数 clang.cindex.Cursor_vist 来遍历，不过更 Python 的方式是采用基于迭代器的方法，这是 Pythong绑定所特有的。处理树结构最直接的方式是递归遍历。这是相当简单的（见 dumpnode 函数）。</p>
 
-<p>有用的游标属性
-游标为 AST 中的每个节点提供了相当丰富的信息。</p>
+<p>游标为 AST 中的每个节点提供了相当丰富的信息。通过游标的来分检出标记了的特定属性数据，然后就可以使用 Python 的模板工具生成响应的业务代码了。</p>
 
-<p>现在 cppython 还处于 alpha 阶段，虽然基本框架已经完成，但仍有很多改进的空间。除了继续完善 Cython 包装代码生成功能外，在现有架构下，cppython 也能很容易地支持 Boost.Python 的包装代码生成。我们甚至可以抛开 Cython 和 Boost.Python，直接生成基于 Python C API 的扩展代码。更进一步，C++ 与其它语言 (例如 Ruby) 的交互代码也可以用类似方式自动生成，毕竟对 cppython 来说，这些改进都只需要添加新的访问类而已。</p>
+<p>现在工具还处于 alpha 阶段，虽然基本框架已经完成，但仍有很多改进的空间。除了继续完善工具的包装代码生成功能外，在现有架构下，拓展出更方便便捷的工具来。</p>
+
 ]]></content>
   </entry>
   
