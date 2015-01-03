@@ -1,24 +1,121 @@
-<?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[MckeeのClub & SAKI'sブログ]]></title>
-  <link href="http://sakishum.github.io/atom.xml" rel="self"/>
-  <link href="http://sakishum.github.io/"/>
-  <updated>2015-01-03T16:08:03+08:00</updated>
-  <id>http://sakishum.github.io/</id>
-  <author>
-    <name><![CDATA[Saki Shum]]></name>
-    
-  </author>
-  <generator uri="http://octopress.org/">Octopress</generator>
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>使用 Clang 解析 C++ 实现自动脚本绑定 - MckeeのClub & SAKI&#8217;sブログ</title>
+  <meta name="author" content="Saki Shum">
 
   
-  <entry>
-    <title type="html"><![CDATA[使用 Clang 解析 C++ 实现自动脚本绑定]]></title>
-    <link href="http://sakishum.github.io/blog/clang-ast-python"/>
-    <updated>2015-01-03T15:30:06+08:00</updated>
-    <id>http://sakishum.github.io/blog/clang-ast-python</id>
-    <content type="html"><![CDATA[<p>最近为了方便工作，需要实现自动脚本绑定（所谓自动脚本绑定，即用 Lua、Python 之类的脚本语言来操作 C/C++ 的代码）的工具，因此首先要求无需手工编写任何绑定代码，此外还要考虑借助 Python 模板技术来批量生成代码，最终的目的是只需要在生成的框架上按需求添加业务逻辑。请注意，自动脚本绑定不是本博文的主旨，只是演示生成的例子。</p>
+  <meta name="description" content="最近为了方便工作，需要实现自动脚本绑定（所谓自动脚本绑定，即用 Lua、Python 之类的脚本语言来操作 C/C++ 的代码）的工具，因此首先要求无需手工编写任何绑定代码，此外还要考虑借助 Python 模板技术来批量生成代码，最终的目的是只需要在生成的框架上按需求添加业务逻辑。请注意， &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://sakishum.github.io/blog/clang-ast-python">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="MckeeのClub & SAKI'sブログ" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+
+<!-- MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+<script type="text/javascript"
+   src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">MckeeのClub & SAKI&#8217;sブログ</a></h1>
+  
+    <h2>Saki Shum&#8217;s Laboratory.</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="https://www.google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:sakishum.github.io" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/"><i class="fa fa-home fa-fw"></i> home</a></li>
+  <li><a href="/blog/archives"><i class="fa fa-folder-open"></i> archives</a></li>
+  <li><a href="/work"><i class="fa fa-linux"></i> work</a></li>
+  <li><a href="/about"><i class="fa fa-user"></i> about</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">使用 Clang 解析 C++ 实现自动脚本绑定</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-01-03T15:30:06+08:00'><span class='date'><span class='date-month'>Jan</span> <span class='date-day'>3</span><span class='date-suffix'>rd</span>, <span class='date-year'>2015</span></span> <span class='time'>3:30 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>最近为了方便工作，需要实现自动脚本绑定（所谓自动脚本绑定，即用 Lua、Python 之类的脚本语言来操作 C/C++ 的代码）的工具，因此首先要求无需手工编写任何绑定代码，此外还要考虑借助 Python 模板技术来批量生成代码，最终的目的是只需要在生成的框架上按需求添加业务逻辑。请注意，自动脚本绑定不是本博文的主旨，只是演示生成的例子。</p>
 
 <p>对程序员这种一心只想偷懒的人来说，类似的重复工作都是写个程序来自动完成。下面介绍下我写的工具，它就是干这活儿的。
 <!--more--></p>
@@ -166,60 +263,164 @@ libclang C API 提供了基于访客（vistor-based）的方式来遍历 AST ，
 游标为 AST 中的每个节点提供了相当丰富的信息。</p>
 
 <p>现在 cppython 还处于 alpha 阶段，虽然基本框架已经完成，但仍有很多改进的空间。除了继续完善 Cython 包装代码生成功能外，在现有架构下，cppython 也能很容易地支持 Boost.Python 的包装代码生成。我们甚至可以抛开 Cython 和 Boost.Python，直接生成基于 Python C API 的扩展代码。更进一步，C++ 与其它语言 (例如 Ruby) 的交互代码也可以用类似方式自动生成，毕竟对 cppython 来说，这些改进都只需要添加新的访问类而已。</p>
-]]></content>
-  </entry>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
   
-  <entry>
-    <title type="html"><![CDATA[Google 编码规范]]></title>
-    <link href="http://sakishum.github.io/blog/google-style-guide"/>
-    <updated>2014-10-21T22:19:56+08:00</updated>
-    <id>http://sakishum.github.io/blog/google-style-guide</id>
-    <content type="html"><![CDATA[<p><a href="http://zh-google-styleguide.readthedocs.org/en/latest/google-cpp-styleguide/">Google编码规范</a>，包含C++，Java，Python，JSON，Objective-C，Shell。在制定自己的编码规范时可以参考一下。</p>
 
-<!--more-->
-]]></content>
-  </entry>
+<span class="byline author vcard">Posted by <span class="fn">Saki Shum</span></span>
+
+      
+
+
+
+
+<time class='entry-date' datetime='2015-01-03T15:30:06+08:00'><span class='date'><span class='date-month'>Jan</span> <span class='date-day'>3</span><span class='date-suffix'>rd</span>, <span class='date-year'>2015</span></span> <span class='time'>3:30 pm</span></time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
   
-  <entry>
-    <title type="html"><![CDATA[My Second Blog]]></title>
-    <link href="http://sakishum.github.io/blog/my-second-blog"/>
-    <updated>2014-10-17T16:18:50+08:00</updated>
-    <id>http://sakishum.github.io/blog/my-second-blog</id>
-    <content type="html"><![CDATA[<pre lang="python"><code>def hello
-  puts "hello world"
-end
-</code></pre>
-
-<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span>title:python </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-<span class="line-number">2</span>
-<span class="line-number">3</span>
-</pre></td><td class="code"><pre><code class="python"><span class="line"><span class="k">def</span> <span class="nf">hello</span><span class="p">():</span>
-</span><span class="line">    <span class="k">print</span> <span class="s">&quot;hello world&quot;</span>
-</span><span class="line">    <span class="k">pass</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div>
-
-<p><span class="caption-wrapper"><img class="caption" src="http://sakishum.github.io/images/dream.jpg" width="" height="" title="Leonhard Euler" /><span class="caption-text">Leonhard Euler</span></span> 
-<!--more--></p>
-
-<p><span class="caption-wrapper"><img class="caption" src="http://sakishum.github.io/images/Leonhard_Euler.jpg" width="" height="" title="Place Kitten #4" /><span class="caption-text">Place Kitten #4</span></span></p>
-
-<i class="fa fa-camera-retro fa-5x"></i>
-
-<p>Test Code in blog  </p>
-
-<div class="bogus-wrapper"><notextile><figure class="code"><figcaption><span>title:main.cpp </span></figcaption>
-<div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class="line-number">1</span>
-<span class="line-number">2</span>
-<span class="line-number">3</span>
-<span class="line-number">4</span>
-</pre></td><td class="code"><pre><code class="c++"><span class="line"><span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
-</span><span class="line"><span class="p">{</span>
-</span><span class="line"> <span class="n">cout</span><span class="o">&lt;&lt;</span><span class="s">&quot;hello world&quot;</span><span class="o">&lt;&lt;</span><span class="n">endl</span><span class="p">;</span>
-</span><span class="line"><span class="p">};</span>
-</span></code></pre></td></tr></table></div></figure></notextile></div>
-
-]]></content>
-  </entry>
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://sakishum.github.io/blog/clang-ast-python" data-via="" data-counturl="http://sakishum.github.io/blog/clang-ast-python" >Tweet</a>
   
-</feed>
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/google-style-guide" title="Previous Post: Google 编码规范">&laquo; Google 编码规范</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1><i class="fa fa-leaf"></i>  About Me</h1>
+  <p>移动互联网工作者(09.6-至今)。</p>
+  <p>Twitter: <a href="https://twitter.com/sakishum"><i class="fa fa-twitter"></i>@sakishum</a></br>
+	 Other: <a href="https://github.com/sakishum"><i class="fa fa-github"></i>Github</a>
+  </p>
+</section>
+<section>
+  <h1><i class="fa fa-clock-o"></i> Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/clang-ast-python">使用 Clang 解析 C++ 实现自动脚本绑定</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/google-style-guide">Google 编码规范</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/my-second-blog">My Second Blog</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+<section>
+  <h1><i class="fa fa-bookmark-o"></i> Categories</h1>
+  <ul id="categories">
+    <li class='category'><a href='/blog/categories/c-slash-c-plus-plus/'>c/c++ (1)</a></li>
+<li class='category'><a href='/blog/categories/octopress/'>octopress (1)</a></li>
+
+  </ul>
+</section>
+<section id="comment_sidebar">
+   <h1><i class="fa fa-comments-o"></i> Recent Comments</h1>
+   <script type="text/javascript" src="https://httpssakishumgithubio.disqus.com/recent_comments_widget.js?num_items=5&hide_avatars=0&avatar_size=32&excerpt_length=20"></script><a href="http://disqus.com/">Powered by Disqus</a>
+</section>
+<section>
+    <h1><i class="fa fa-link"></i> Useful Links</h1>
+    <ul>
+        <li><a href="http://coolshell.cn">酷壳 CoolShell</a></li>    
+        <li><a href="http://mindhacks.cn">刘末鹏 MIND HACKS</a>
+        <li><a href="http://cnblogs.com/Solstice/">陈硕 Solstice</a></li>
+        <li><a href="http://blog.codingnow.com/">云风 Codingnow</a></li>
+        </li>
+    </ul>
+</section>
+<section>
+  <h1><i class="fa fa-tag"></i>  CG License</h1>
+  <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="創用 CC 授權條款" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" /></a><br />本著作由<a xmlns:cc="http://creativecommons.org/ns#" href="http://sakishum.github.io/" property="cc:attributionName" rel="cc:attributionURL">sakishum</a>製作，以<a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">創用CC 姓名標示-非商業性-相同方式分享 4.0 國際 授權條款</a>釋出。<br />此作品衍生自<a xmlns:dct="http://purl.org/dc/terms/" href="http://sakishum.github.io/" rel="dct:source">http://sakishum.github.io/</a>。
+</section>
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2015 - Saki Shum -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+  <script type="text/javascript">
+		var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+		document.write(unescape("%3Cspan id='cnzz_stat_icon_1253434407'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "v1.cnzz.com/z_stat.php%3Fid%3D1253434407%26show%3Dpic' type='text/javascript'%3E%3C/script%3E"));
+  </script>
+</p>
+
+</footer>
+  
+
+<script type="text/javascript">
+      var disqus_shortname = 'httpssakishumgithubio';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://sakishum.github.io/blog/clang-ast-python';
+        var disqus_url = 'http://sakishum.github.io/blog/clang-ast-python';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

@@ -9,7 +9,7 @@
   <meta name="author" content="Saki Shum">
 
   
-  <meta name="description" content="Google编码规范，包含C++，Java，Python，JSON，Objective-C，Shell。在制定自己的编码规范时可以参考一下。 ">
+  <meta name="description" content="最近为了方便工作，需要实现自动脚本绑定（所谓自动脚本绑定，即用 Lua、Python 之类的脚本语言来操作 C/C++ 的代码）的工具，因此首先要求无需手工编写任何绑定代码，此外还要考虑借助 Python 模板技术来批量生成代码，最终的目的是只需要在生成的框架上按需求添加业务逻辑。请注意， &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -96,6 +96,41 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/clang-ast-python">使用 Clang 解析 C++ 实现自动脚本绑定</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-01-03T15:30:06+08:00'><span class='date'><span class='date-month'>Jan</span> <span class='date-day'>3</span><span class='date-suffix'>rd</span>, <span class='date-year'>2015</span></span> <span class='time'>3:30 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>最近为了方便工作，需要实现自动脚本绑定（所谓自动脚本绑定，即用 Lua、Python 之类的脚本语言来操作 C/C++ 的代码）的工具，因此首先要求无需手工编写任何绑定代码，此外还要考虑借助 Python 模板技术来批量生成代码，最终的目的是只需要在生成的框架上按需求添加业务逻辑。请注意，自动脚本绑定不是本博文的主旨，只是演示生成的例子。</p>
+
+<p>对程序员这种一心只想偷懒的人来说，类似的重复工作都是写个程序来自动完成。下面介绍下我写的工具，它就是干这活儿的。
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/clang-ast-python">阅读全文 &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -198,6 +233,10 @@ end
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/clang-ast-python">使用 Clang 解析 C++ 实现自动脚本绑定</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/google-style-guide">Google 编码规范</a>
       </li>
     
@@ -244,7 +283,7 @@ end
     </div>
   </div>
   <footer role="contentinfo"><p>
-  Copyright &copy; 2014 - Saki Shum -
+  Copyright &copy; 2015 - Saki Shum -
   <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
   <script type="text/javascript">
 		var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");
