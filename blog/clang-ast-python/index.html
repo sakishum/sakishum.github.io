@@ -115,7 +115,7 @@
   </header>
 
 
-<div class="entry-content"><p>最近为了方便工作，需要实现自动脚本绑定（所谓自动脚本绑定，即用 Lua、Python 之类的脚本语言来操作 C/C++ 的代码）的工具，因此首先要求无需手工编写任何绑定代码，此外还要考虑借助 Python 模板技术来批量生成代码，最终的目的是只需要在生成的框架上按需求添加业务逻辑。请注意，自动脚本绑定不是本博文的主旨，只是演示生成的例子。</p>
+<div class="entry-content"><p>最近为了方便工作，需要实现自动脚本绑定（所谓自动脚本绑定，即用 Lua、Python 之类的脚本语言来操作 C/C++ 的代码）的工具，因此首先要求无需手工编写任何绑定代码，此外还要考虑借助 Python 模板技术来批量生成代码，最终的目的是只需要在生成的框架上按需求添加业务逻辑。请注意，代码自动生成不是本博文的主旨，只是简单的演示脚本绑定例子。</p>
 
 <p>对程序员这种一心只想偷懒的人来说，类似的重复工作都是写个程序来自动完成。下面介绍下我写的工具，它就是干这活儿的。
 <!--more--></p>
@@ -179,7 +179,6 @@
 <span class="line-number">36</span>
 <span class="line-number">37</span>
 <span class="line-number">38</span>
-<span class="line-number">39</span>
 </pre></td><td class="code"><pre><code class="python"><span class="line"><span class="c">#!/usr/bin/env python                                                                                                                                         </span>
 </span><span class="line"><span class="c">#coding=utf-8</span>
 </span><span class="line"><span class="kn">import</span> <span class="nn">sys</span>
@@ -202,14 +201,13 @@
 </span><span class="line">    <span class="n">text</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">spelling</span> <span class="ow">or</span> <span class="n">node</span><span class="o">.</span><span class="n">displayname</span>
 </span><span class="line">    <span class="n">kind</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">kind</span><span class="p">)[</span><span class="nb">str</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">kind</span><span class="p">)</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="s">&#39;.&#39;</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span><span class="p">:]</span>
 </span><span class="line">    <span class="k">print</span> <span class="s">&#39; &#39;</span> <span class="o">*</span> <span class="n">indent</span><span class="p">,</span><span class="s">&#39;{} {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">kind</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
-</span><span class="line">    <span class="c">#print &#39; &#39; * indent, node.kind, node.spelling</span>
 </span><span class="line">    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">node</span><span class="o">.</span><span class="n">get_children</span><span class="p">():</span>
 </span><span class="line">        <span class="n">dumpnode</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">indent</span> <span class="o">+</span> <span class="mi">2</span><span class="p">)</span>
 </span><span class="line">
 </span><span class="line"><span class="k">def</span> <span class="nf">check_argv</span><span class="p">():</span>
-</span><span class="line"><span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
-</span><span class="line"><span class="k">print</span><span class="p">(</span><span class="s">&quot;Usage: clang_3.py [header file name]&quot;</span><span class="p">)</span>
-</span><span class="line"><span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
+</span><span class="line">    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
+</span><span class="line">        <span class="k">print</span><span class="p">(</span><span class="s">&quot;Usage: clang_3.py [header file name]&quot;</span><span class="p">)</span>
+</span><span class="line">        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">()</span>
 </span><span class="line">
 </span><span class="line"><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
 </span><span class="line">    <span class="n">check_argv</span><span class="p">()</span>
